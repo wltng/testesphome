@@ -1,6 +1,6 @@
 # 1. SUBSTITUTIONS (Names to be used in sensor IDs)
 substitutions:
-  name: "slzb-06-adapter"
+  name: "slzb-06-zigbee_bluetooth"
 
 
 # 2. GENERAL ESPHOME CONFIGURATION SETTINGS
@@ -10,8 +10,8 @@ esphome:
   name: "${name}"
   name_add_mac_suffix: true
   project:
-    name: slzb-06.zigbee
-    version: "2.0"
+    name: SMLIGHT.SLZB-06*
+    version: "1.31"
   on_boot:
     priority: 600
     then:
@@ -23,36 +23,34 @@ esphome:
 esp32:
   board: esp32dev
   framework:
-    type: esp-idf
+    type: arduino
 
 ## Connection to Home Assistant through API is enabled
 api:
-  encryption:
-    key: !secret api_encr_key
-## Logger is enabled
-logger:
-## OTA firmware updates are available
-ota:
-## Accessible portal with control buttons is available
-web_server:
-  port: 80
-  local: True
 
-ota:
-  password: "slzb06"
+## Logger is enabled
+#logger:
+
+## OTA firmware updates are available
+#ota:
+
+## Accessible portal with control buttons is available
+#web_server:
+#  port: 80
+#  local: True
 
 ## WiFi settings
 #wifi:
 #  ssid: !secret wifi_ssid
 #  password: !secret wifi_password
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
+#
+#  # Enable fallback hotspot (captive portal) in case wifi connection fails
 #  ap:
 #    ssid: "slzb-06 Hotspot"
 #    password: "slzb06"
 
 ## Enabling captive portal
-captive_portal:
+# captive_portal:
 
 
 # 3. EXTERNAL COMPONENTS USED
@@ -83,6 +81,7 @@ uart:
 ## Stream Server
 stream_server:
   uart_id: uart_bus
+  id: streamServer
   port: 6638
 
 ## MDNS service settings
@@ -109,10 +108,10 @@ esp32_ble_tracker:
 bluetooth_proxy:
   active: true
 
-button:
-- platform: safe_mode
-  name: Safe Mode Boot
-  entity_category: diagnostic
+#button:
+#- platform: safe_mode
+#  name: Safe Mode Boot
+#  entity_category: diagnostic
 
 
 # 6. SENSORS
@@ -165,8 +164,8 @@ binary_sensor:
       then:
         - switch.toggle: modeSwitchTemplate
   - platform: stream_server
-    connected:
-      name: "SLZB-06* Serial Connected"
+    stream_server: streamServer
+    name: "SLZB-06* Serial Connected"
 
 # 7. SWITCHES
 ## ESP32 Restart
@@ -220,7 +219,7 @@ switch:
 
 ## Mode LAN/USB switch
   - platform: template
-    name: "DEVICE MODE SWITCH (LAN|OFF| / USB|ON|)"
+    name: "DEVICE MODE SWITCH (LAN|OFF / USB|ON)"
     id: modeSwitchTemplate
     turn_on_action:
       - switch.turn_on: gpio12LED1
@@ -236,7 +235,7 @@ switch:
           state: OFF
 
   - platform: gpio
-    name: "DEVICE MODE SWITCH (LAN|OFF| / USB|ON|)"
+    name: "DEVICE MODE SWITCH (LAN|OFF / USB|ON)"
     restore_mode: ALWAYS_OFF
     icon: mdi:toggle-switch
     internal: true
