@@ -222,6 +222,7 @@ switch:
 ## Mode LAN/USB switch
   - platform: template
     name: "DEVICE MODE SWITCH (LAN|OFF / USB|ON)"
+    restore_mode: RESTORE_DEFAULT_ON
     id: modeSwitchTemplate
     turn_on_action:
       - switch.turn_on: gpio12LED1
