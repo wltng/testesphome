@@ -22,9 +22,10 @@ esphome:
 ## Board information
 esp32:
   board: esp32dev
+  flash_size: 16MB
   framework:
     type: arduino
-  flash_size: 16MB
+
 
 ## Connection to Home Assistant through API is enabled
 api:
