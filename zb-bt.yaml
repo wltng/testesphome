@@ -34,7 +34,9 @@ api:
 #logger:
 
 ## OTA firmware updates are available
-#ota:
+ota:
+  platform:
+    esphome:
 
 ## Accessible portal with control buttons is available
 web_server:
