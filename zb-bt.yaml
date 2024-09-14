@@ -35,8 +35,7 @@ api:
 
 ## OTA firmware updates are available
 ota:
-  platform:
-    esphome:
+  - platform: esphome
 
 ## Accessible portal with control buttons is available
 web_server:
